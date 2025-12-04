@@ -100,6 +100,7 @@ strum = { version = "0.26", features = ["derive"] }
 strum_macros = "0.26"
 webbrowser = "1.0"
 thiserror = "1.0.51"
+tempfile = "3"
 
 img-parts = "0.3" # for exif saving
 dark-light = "2.0"
@@ -174,7 +175,7 @@ codegen-units = 1
 # panic = "abort"
 
 [profile.dev]
-debug = false
+debug = true
 opt-level = 2
 lto = false
 codegen-units = 64
