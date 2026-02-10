@@ -169,9 +169,9 @@ criterion = { version = "0.5.1", features = ["html_reports", "stable"] }
 
 [profile.release]
 opt-level = 3
-lto = "fat"
-debug = false
-strip = true
+lto = false
+debug = true
+strip = false
 codegen-units = 1
 # panic = "abort"
 
