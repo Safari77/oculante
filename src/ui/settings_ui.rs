@@ -155,7 +155,7 @@ pub fn settings_ui(app: &mut App, ctx: &Context, state: &mut OculanteState, _gfx
                                                 egui::DragValue::new(&mut state.persistent_settings.max_recents)
                                                     .range(0..=12),
                                             )
-                                            .changed() 
+                                            .changed()
                                             {
                                                 state
                                                     .volatile_settings
@@ -165,7 +165,7 @@ pub fn settings_ui(app: &mut App, ctx: &Context, state: &mut OculanteState, _gfx
                                         },
                                         ui,
                                     );
-                                    
+
                                     configuration_item_ui("Do not reset image view", "When a new image is loaded, keep the current zoom and offset.", |ui| {
                                         ui.styled_checkbox(&mut state.persistent_settings.keep_view, "");
                                     }, ui);
@@ -264,6 +264,14 @@ pub fn settings_ui(app: &mut App, ctx: &Context, state: &mut OculanteState, _gfx
                                         });
                                     }, ui);
 
+                                    configuration_item_ui("Scale", "Adjust the User Interface scale to be larger or smaller.", |ui| {
+                                        if ui.add(egui::DragValue::new(&mut state.persistent_settings.ui_scale)
+                                            .range(0.1..=4.0).speed(0.01))
+                                            .changed(){
+                                                ctx.set_pixels_per_point(state.persistent_settings.ui_scale);
+                                        }
+                                    }, ui);
+
                                    configuration_item_ui("Accent color", "Customize the primary color used in the UI.", |ui| {
                                         if ui
                                         .color_edit_button_srgb(&mut state.persistent_settings.accent_color)
@@ -272,15 +280,6 @@ pub fn settings_ui(app: &mut App, ctx: &Context, state: &mut OculanteState, _gfx
                                             apply_theme(state, ctx);
                                         }
                                     }, ui);
-
-                                    // This does not work, it just scales the texture in Notan.
-                                    // https://docs.rs/egui/latest/egui/struct.Context.html#method.set_zoom_factor
-                                    // configuration_item_ui("Zoom", "UI global zoom factor", |ui| {
-                                    //     let mut z = ui.ctx().zoom_factor();
-                                    //     if ui.add(egui::DragValue::new(&mut z).clamp_range(0.1..=4.0).speed(0.01)).changed() {
-                                    //         ui.ctx().set_zoom_factor(z);
-                                    //     }
-                                    // }, ui);
 
                                     configuration_item_ui("Background color", "The color used as a background for images.", |ui| {
                                         ui.color_edit_button_srgb(&mut state.persistent_settings.background_color);
@@ -693,7 +692,8 @@ fn keybinding_ui(app: &mut App, state: &mut OculanteState, ui: &mut Ui) {
         ui.label_unselectable("While this is open, regular shortcuts will not work.");
         if no_keys_pressed {
             ui.label_unselectable(
-                egui::RichText::new("Please press & hold a key").color(Color32::RED),
+                egui::RichText::new("Please press & hold a key")
+                    .color(ui.style().visuals.selection.bg_fill),
             );
         }
     });
