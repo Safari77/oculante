@@ -99,7 +99,6 @@ serde_json = { version = "1.0", features = ["preserve_order"] }
 strum = { version = "0.28", features = ["derive"] }
 strum_macros = "0.28"
 webbrowser = "1.0"
-thiserror = "1.0.51"
 tempfile = "3"
 thiserror = "2.0"
 
